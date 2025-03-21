@@ -1,8 +1,0 @@
-{
-  "name": "device-approval-api",
-  "version": "1.0.0",
-  "main": "api/approveDevice.js",
-  "scripts": {
-    "start": "node api/approveDevice.js"
-  }
-}
