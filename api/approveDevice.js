@@ -1,5 +1,5 @@
 export default function handler(req, res) {
-    const approvedDevices = ["device123", "device456"]; // Replace with actual approved device IDs
+    const approvedDevices = ["device123", "device456"]; // Replace with real device IDs
     const { deviceId } = req.query;
 
     if (!deviceId) {
