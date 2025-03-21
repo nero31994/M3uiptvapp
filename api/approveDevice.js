@@ -28,15 +28,17 @@ export default function handler(req, res) {
     let usedCodes = loadUsedCodes();
 
     if (!code) {
-        return res.status(400).json({ error: "Code is required" });
+        return res.status(400).json({ approved: false, error: "Code is required" });
     }
 
+    // Check if code is already used
     if (usedCodes[code]) {
         return res.status(403).json({ approved: false, error: "Code already used!" });
     }
 
+    // Check if code is valid
     if (approvedCodes[code]) {
-        usedCodes[code] = true;  // Mark the code as used
+        usedCodes[code] = true; // Mark the code as used
         saveUsedCodes(usedCodes); // Save to file
 
         return res.status(200).json({ approved: true, user: approvedCodes[code] });
