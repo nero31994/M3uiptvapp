@@ -1,47 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-
-const filePath = path.resolve('./usedCodes.json');
-
-// List of valid codes (Modify as needed)
-let approvedCodes = {
-    "7days": "User1",
-    "VIP2025": "User2",
-    "TRIAL123": "User3"
-};
-
-// Load used codes from file
-function loadUsedCodes() {
-    if (fs.existsSync(filePath)) {
-        return JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    }
-    return {};
-}
-
-// Save used codes to file
-function saveUsedCodes(usedCodes) {
-    fs.writeFileSync(filePath, JSON.stringify(usedCodes, null, 2), 'utf8');
-}
-
 export default function handler(req, res) {
-    const { code } = req.query;
-    let usedCodes = loadUsedCodes();
+    // List of valid codes
+    const approvedCodes = ["7days", "VIP2025", "TRIAL123"];
 
+    // Get code from request
+    const { code } = req.query;
+
+    // Check if code is provided
     if (!code) {
         return res.status(400).json({ approved: false, error: "Code is required" });
     }
 
-    // Check if code is already used
-    if (usedCodes[code]) {
-        return res.status(403).json({ approved: false, error: "Code already used!" });
-    }
-
     // Check if code is valid
-    if (approvedCodes[code]) {
-        usedCodes[code] = true; // Mark the code as used
-        saveUsedCodes(usedCodes); // Save to file
-
-        return res.status(200).json({ approved: true, user: approvedCodes[code] });
+    if (approvedCodes.includes(code)) {
+        return res.status(200).json({ approved: true });
     } else {
         return res.status(403).json({ approved: false, error: "Invalid code" });
     }
